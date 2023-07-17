@@ -4,6 +4,8 @@ from aiogram.utils import executor
 
 token = open('token.txt').read()
 
+token = "".join(token.split())
+
 bot = Bot(token=token)
 dp = Dispatcher(bot)
 

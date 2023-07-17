@@ -2,4 +2,4 @@
 ./venv/Scripts/activate
 
 cd src
-python bot.py
+python3 bot.py

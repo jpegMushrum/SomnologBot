@@ -1,6 +1,7 @@
-# Somnolog bot
+# Somnolog Bot
 ## Functional
 - Add dream, set it's type, description
+- Clear your dream history, delete last dream (I imagine that you will use it to correct mistakes)
 - See your history of dreams
 - See statistic
 
@@ -15,3 +16,6 @@
 ## Technology Stack
 - MySQL is used for database.
 - Aiogram is used for Bot.
+
+## Database Structure
+You can see my database structure here: https://drawsql.app/teams/jpeg-jackals/diagrams/dreams.

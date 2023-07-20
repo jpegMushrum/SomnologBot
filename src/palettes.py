@@ -20,12 +20,22 @@ button_no = KeyboardButton('no')
 yes_no_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 yes_no_keyboard.row(button_yes, button_no)
 
+button_usual = KeyboardButton('usual')
+button_nightmare = KeyboardButton('nightmare')
+button_erotic = KeyboardButton('erotic')
+types_keyboard = ReplyKeyboardMarkup()
+types_keyboard.row(button_usual, button_erotic, button_nightmare).add(button_cancel)
+
 
 button_cancel_inline = InlineKeyboardButton(text='cancel', callback_data='cancel')
 button_next_page = InlineKeyboardButton(text='next page', callback_data='next_page')
 button_previous_page = InlineKeyboardButton(text='previous page', callback_data='previous_page')
 pages_keyboard = InlineKeyboardMarkup(row_width=2)
 pages_keyboard.row(button_previous_page, button_next_page).add(button_cancel_inline)
+
+button_to_choose = InlineKeyboardButton(text='back to pages', callback_data='back_to_choose')
+show_dream_keyboard = InlineKeyboardMarkup()
+show_dream_keyboard.add(button_to_choose).add(button_cancel_inline)
 
 cancel_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
 cancel_keyboard.add(button_cancel)

@@ -20,7 +20,7 @@ def msg_on_empty_handler(name):
 def msg_on_adding_1(name):
     return f'Good, {name},you need to come up with name for your dream.'
 
-msg_on_adding_2 = 'Then choose type of your dream.'
+msg_on_adding_2 = 'Then choose type of your dream. (usual, erotic ot nightmare)'
 
 msg_on_adding_3 = 'Please type me details about your dream.'
 
@@ -61,8 +61,16 @@ def msg_send_dream(name, dream_type, description):
     response += f'Description: {description}\n'
     return response
 
-msg_choosing_page_error = 'Don\'t press it again'
+msg_choosing_page_error = 'Don\'t press it again, please'
 
-msg_on_cancel = 'You canceled all actions. Now you can call standard commands'
+msg_on_cancel = 'You canceled all actions. Now you can call standard commands.'
 
-msg_on_wrong_number = 'You don\'t have a dream with this number'
+msg_on_wrong_number = 'You don\'t have a dream with this number.'
+
+def msg_statistic(name, data):
+    response = f'It\'s {name} statistic:\n'
+    count = sum(data)
+    response += f'Usual dreams: {data[0]/count*100:.2f}%\n'
+    response += f'Erotic dreams: {data[1]/count*100:.2f}%\n'
+    response += f'Nightmares: {data[2]/count*100:.2f}%\n'
+    return response

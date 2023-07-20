@@ -59,16 +59,19 @@ async def command_add_2(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['dream_name'] = message.text.replace('\'', '\"').replace('\\', '\\\\')
 
-    await bot.send_message(message.from_user.id, messages.msg_on_adding_2)
+    await bot.send_message(message.from_user.id, messages.msg_on_adding_2, reply_markup=palettes.types_keyboard)
     await states.AddingDream.next()
 
 @dp.message_handler(state=states.AddingDream.type)
 async def command_add_3(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
-        data['dream_type'] = message.text.replace('\'', '\"').replace('\\', '\\\\')
-
-    await bot.send_message(message.from_user.id, messages.msg_on_adding_3)
-    await states.AddingDream.next()
+        if message.text in ['erotic', 'nightmare', 'usual']:
+            data['dream_type'] = message.text.replace('\'', '\"').replace('\\', '\\\\')
+            await bot.send_message(message.from_user.id, messages.msg_on_adding_3, reply_markup=palettes.cancel_keyboard)
+            await states.AddingDream.next()
+        else:
+            data['dream_type'] = 'usual'
+            await bot.send_message(message.from_user.id, messages.msg_on_adding_2)
 
 @dp.message_handler(state=states.AddingDream.description)
 async def command_add_4(message: types.Message, state: FSMContext):
@@ -127,9 +130,10 @@ async def show_dream(message: types.Message):
         await bot.send_message(message.from_user.id, messages.msg_on_wrong_number)
     else:
         dream = await dbActions.getOneDream(message.from_user.id, number)
-        await bot.send_message(message.from_user.id, messages.msg_send_dream(dream["name"], dream["type"], dream["description"]), reply_markup=palettes.pages_keyboard)
+        await bot.send_message(message.from_user.id, messages.msg_send_dream(dream["name"], dream["type"], dream["description"]),
+                               reply_markup=palettes.show_dream_keyboard)
 
-@dp.callback_query_handler((lambda call: call.data == 'next_page' or call.data == 'previous_page'), state='*')
+@dp.callback_query_handler((lambda call: call.data in ['next_page', 'previous_page', 'back_to_choose']), state='*')
 async def choosing_page(call: types.CallbackQuery, state: FSMContext):
     try:
         async with state.proxy() as data:
@@ -151,6 +155,14 @@ async def choosing_dream(message: types.Message):
     else:
         await bot.send_message(message.from_user.id, messages.msg_if_smt_wrong, reply_markup=palettes.pages_keyboard)
 
+@dp.message_handler(commands=['statistic'])
+async def command_statistic(message: types.Message):
+    if await dbActions.getNumberOfDreams(message.from_user.id) > 0:
+        data = await dbActions.getStatistic(message.from_user.id)
+        await bot.send_message(message.from_user.id, messages.msg_statistic(await dbActions.getName(message.from_user.id), data),
+                               reply_markup=palettes.standard_keyboard)
+    else:
+        await bot.send_message(message.from_user.id, messages.msg_if_no_dreams)
 @dp.message_handler(commands=['help'])
 async def command_help(message: types.Message):
     await bot.send_message(message.from_user.id, messages.msg_on_help, reply_markup=palettes.standard_keyboard)

@@ -54,6 +54,31 @@ async def checkUser(user_id):
     else:
         return True
 
+async def getStatistic(user_id):
+    connection = pymysql.connect(
+        user=user,
+        password=password,
+        host=host,
+        port=3306,
+        database=db_name,
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT type FROM history WHERE userId = {user_id};")
+    connection.commit()
+    dreams = cursor.fetchall()
+    data = [0, 0, 0]
+
+    for dream in dreams:
+        if dream['type'] == 'usual':
+            data[0] += 1
+        elif dream['type'] == 'erotic':
+            data[1] += 1
+        else:
+            data[2] += 1
+
+    connection.close()
+    return data
 
 async def getName(user_id):
     connection = pymysql.connect(

@@ -15,6 +15,7 @@ async def addUser(user_id, user_name):
     connection.commit()
     connection.close()
 
+
 async def changeUserName(user_id, user_name):
     connection = pymysql.connect(
         user=user,
@@ -31,6 +32,7 @@ async def changeUserName(user_id, user_name):
     cursor.execute(f"INSERT INTO `clients` (id, userName) VALUES ({user_id}, \'{user_name}\');")
     connection.commit()
     connection.close()
+
 
 async def checkUser(user_id):
     connection = pymysql.connect(
@@ -51,6 +53,7 @@ async def checkUser(user_id):
         return False
     else:
         return True
+
 
 async def getName(user_id):
     connection = pymysql.connect(
@@ -85,6 +88,7 @@ async def addDream(user_id, name, dream_type, description):
     connection.commit()
     connection.close()
 
+
 async def deleteLastDream(user_id):
     connection = pymysql.connect(
         user=user,
@@ -117,3 +121,51 @@ async def clearDreamHistory(user_id):
     connection.commit()
     connection.close()
 
+
+async def getListOfDreams(user_id, page):
+    connection = pymysql.connect(
+        user=user,
+        password=password,
+        host=host,
+        port=3306,
+        database=db_name,
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT number, name FROM history WHERE userId = {user_id} AND number > {(page - 1) * 20} AND number <= {page * 20};")
+    connection.commit()
+    dreams = cursor.fetchall()
+    connection.close()
+    return dreams
+
+async def getNumberOfDreams(user_id):
+    connection = pymysql.connect(
+        user=user,
+        password=password,
+        host=host,
+        port=3306,
+        database=db_name,
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    cursor = connection.cursor()
+    cursor.execute(f'SELECT number FROM history WHERE userId = {user_id}')
+    connection.commit()
+    number = len(cursor.fetchall())
+    connection.close()
+    return number
+
+async def getOneDream(user_id: int, number: int):
+    connection = pymysql.connect(
+        user=user,
+        password=password,
+        host=host,
+        port=3306,
+        database=db_name,
+        cursorclass=pymysql.cursors.DictCursor
+    )
+    cursor = connection.cursor()
+    cursor.execute(f"SELECT name, type, description FROM history WHERE userId = {user_id} AND number = {number};")
+    connection.commit()
+    dream = cursor.fetchall()
+    connection.close()
+    return dream[0]

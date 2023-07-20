@@ -13,3 +13,6 @@ class DeletingLastDream(StatesGroup):
 
 class ClearingAllHistory(StatesGroup):
     clear = State()
+
+class ShowingHistory(StatesGroup):
+    choose_page = State()

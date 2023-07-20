@@ -49,19 +49,11 @@ def msg_on_history(page, number_of_pages, dreams):
     response = f'I show you {page}/{number_of_pages} page, choose one dream to see it\'s type and description. Type it\'s number.\n'
     for dream in dreams:
         response += f'{dream["number"]}. {dream["name"]}\n'
-    response += 'To see next page type "next page", to see previous page type "previous page".\n'
     return response
 
-def msg_on_choosing_page(page, number_of_pages, dreams):
-    response = f'It\'s {page}/{number_of_pages} page.\n'
-    for dream in dreams:
-        response += f'{dream["number"]}. {dream["name"]}\n'
-    response += 'To see next page type "next page", to see previous page type "previous page".\n'
-    return response
+msg_if_smt_wrong = 'Sorry, but your actions are wrong. Please, follow instructions.\n'
 
-msg_if_smt_wrong = 'Sorry, mut your actions are wrong. Please, follow instructions.\n'
-
-msg_if_no_dreams = 'Sorry, you don\'t have any dreams now.'
+msg_if_no_dreams = 'You don\'t have any dreams now.'
 
 def msg_send_dream(name, dream_type, description):
     response = f'Name: {name}\n'
@@ -69,4 +61,8 @@ def msg_send_dream(name, dream_type, description):
     response += f'Description: {description}\n'
     return response
 
+msg_choosing_page_error = 'Don\'t press it again'
+
 msg_on_cancel = 'You canceled all actions. Now you can call standard commands'
+
+msg_on_wrong_number = 'You don\'t have a dream with this number'

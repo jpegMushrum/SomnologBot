@@ -15,4 +15,4 @@ class ClearingAllHistory(StatesGroup):
     clear = State()
 
 class ShowingHistory(StatesGroup):
-    choose_page = State()
+    choose_dream = State()

@@ -1,4 +1,5 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 button_rename = KeyboardButton('/rename')
 button_add = KeyboardButton('/add')
@@ -19,10 +20,12 @@ button_no = KeyboardButton('no')
 yes_no_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 yes_no_keyboard.row(button_yes, button_no)
 
-button_next_page = KeyboardButton('next page')
-button_previous_page = KeyboardButton('previous page')
-pages_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-pages_keyboard.row(button_previous_page, button_next_page).add(button_cancel)
+
+button_cancel_inline = InlineKeyboardButton(text='cancel', callback_data='cancel')
+button_next_page = InlineKeyboardButton(text='next page', callback_data='next_page')
+button_previous_page = InlineKeyboardButton(text='previous page', callback_data='previous_page')
+pages_keyboard = InlineKeyboardMarkup(row_width=2)
+pages_keyboard.row(button_previous_page, button_next_page).add(button_cancel_inline)
 
 cancel_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
 cancel_keyboard.add(button_cancel)

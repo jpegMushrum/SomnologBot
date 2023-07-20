@@ -1,5 +1,4 @@
 import math
-
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher, FSMContext
 from aiogram.utils import executor
@@ -15,6 +14,11 @@ dp = Dispatcher(bot, storage=storage)
 
 async def on_startup(_):
     print('Bot is now running')
+
+@dp.callback_query_handler((lambda call: call.data == 'cancel'), state='*')
+async def command_cancel(call: types.CallbackQuery, state: FSMContext):
+    await bot.send_message(call.from_user.id, messages.msg_on_cancel, reply_markup=palettes.standard_keyboard)
+    await state.finish()
 
 @dp.message_handler(state='*', commands=['cancel'])
 async def command_cancel(message: types.Message, state: FSMContext):
@@ -115,31 +119,37 @@ async def command_history(message: types.Message, state: FSMContext):
         response = messages.msg_on_history(data['current_page'], data['number_of_pages'], page)
 
     await bot.send_message(message.from_user.id, response, reply_markup=palettes.pages_keyboard)
-    await states.ShowingHistory.choose_page.set()
+    await states.ShowingHistory.choose_dream.set()
 
-async def show_dream(message: types.Message, state: FSMContext):
-    dream = await dbActions.getOneDream(message.from_user.id, int(message.text))
-    await bot.send_message(message.from_user.id, messages.msg_send_dream(dream["name"], dream["type"], dream["description"]), reply_markup=palettes.pages_keyboard)
-    return
-
-@dp.message_handler(state=states.ShowingHistory.choose_page)
-async def choosing_page(message: types.Message, state: FSMContext):
-    if message.text.isnumeric():
-        await show_dream(message, state)
+async def show_dream(message: types.Message):
+    number = int(message.text)
+    if number > await dbActions.getNumberOfDreams(message.from_user.id) or number < 1:
+        await bot.send_message(message.from_user.id, messages.msg_on_wrong_number)
     else:
+        dream = await dbActions.getOneDream(message.from_user.id, number)
+        await bot.send_message(message.from_user.id, messages.msg_send_dream(dream["name"], dream["type"], dream["description"]), reply_markup=palettes.pages_keyboard)
+
+@dp.callback_query_handler((lambda call: call.data == 'next_page' or call.data == 'previous_page'), state='*')
+async def choosing_page(call: types.CallbackQuery, state: FSMContext):
+    try:
         async with state.proxy() as data:
-            if message.text.lower() == 'next page' and data["current_page"] < data["number_of_pages"]:
+            if call.data == 'next_page' and data["current_page"] < data["number_of_pages"]:
                 data["current_page"] += 1
-            elif message.text.lower() == 'previous page' and data["current_page"] > 1:
+            elif call.data == 'previous_page' and data["current_page"] > 1:
                 data["current_page"] -= 1
-            else:
-                await bot.send_message(message.from_user.id, messages.msg_if_smt_wrong, reply_markup=palettes.pages_keyboard)
-                return
+            page = await dbActions.getListOfDreams(call.from_user.id, data["current_page"])
 
-            page = await dbActions.getListOfDreams(message.from_user.id, data["current_page"])
-            response = messages.msg_on_choosing_page(data["current_page"], data["number_of_pages"], page)
+        response = messages.msg_on_history(data["current_page"], data["number_of_pages"], page)
+        await bot.edit_message_text(response, call.from_user.id, call.message.message_id, reply_markup=palettes.pages_keyboard)
+    except:
+        await call.answer(messages.msg_choosing_page_error)
 
-        await bot.send_message(message.from_user.id, response, reply_markup=palettes.pages_keyboard)
+@dp.message_handler(state=states.ShowingHistory.choose_dream)
+async def choosing_dream(message: types.Message):
+    if message.text.isnumeric():
+        await show_dream(message)
+    else:
+        await bot.send_message(message.from_user.id, messages.msg_if_smt_wrong, reply_markup=palettes.pages_keyboard)
 
 @dp.message_handler(commands=['help'])
 async def command_help(message: types.Message):

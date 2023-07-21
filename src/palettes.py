@@ -1,41 +1,25 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-button_rename = KeyboardButton('/rename')
-button_add = KeyboardButton('/add')
-button_history = KeyboardButton('/history')
-button_statistic = KeyboardButton('/statistic')
-button_delete = KeyboardButton('/delete')
-button_clear = KeyboardButton('/clear')
-button_cancel = KeyboardButton('/cancel')
-button_help = KeyboardButton('/help')
-
-standard_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2, one_time_keyboard=True)
-standard_keyboard.row(button_add, button_history, button_statistic)
-standard_keyboard.row(button_delete, button_clear)
-standard_keyboard.row(button_rename, button_help)
-
-button_yes = KeyboardButton('yes')
-button_no = KeyboardButton('no')
-yes_no_keyboard = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+button_cancel = InlineKeyboardButton(text='cancel', callback_data='cancel')
+button_yes = InlineKeyboardButton(text='yes', callback_data='yes')
+button_no = InlineKeyboardButton(text='no', callback_data='no')
+yes_no_keyboard = InlineKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 yes_no_keyboard.row(button_yes, button_no)
 
-button_usual = KeyboardButton('usual')
-button_nightmare = KeyboardButton('nightmare')
-button_erotic = KeyboardButton('erotic')
-types_keyboard = ReplyKeyboardMarkup()
+button_usual = InlineKeyboardButton(text='usual', callback_data='usual')
+button_nightmare = InlineKeyboardButton(text='nightmare', callback_data='nightmare')
+button_erotic = InlineKeyboardButton(text='erotic', callback_data='erotic')
+types_keyboard = InlineKeyboardMarkup()
 types_keyboard.row(button_usual, button_erotic, button_nightmare).add(button_cancel)
 
-
-button_cancel_inline = InlineKeyboardButton(text='cancel', callback_data='cancel')
 button_next_page = InlineKeyboardButton(text='next page', callback_data='next_page')
 button_previous_page = InlineKeyboardButton(text='previous page', callback_data='previous_page')
 pages_keyboard = InlineKeyboardMarkup(row_width=2)
-pages_keyboard.row(button_previous_page, button_next_page).add(button_cancel_inline)
+pages_keyboard.row(button_previous_page, button_next_page).add(button_cancel)
 
 button_to_choose = InlineKeyboardButton(text='back to pages', callback_data='back_to_choose')
 show_dream_keyboard = InlineKeyboardMarkup()
-show_dream_keyboard.add(button_to_choose).add(button_cancel_inline)
+show_dream_keyboard.add(button_to_choose).add(button_cancel)
 
-cancel_keyboard = ReplyKeyboardMarkup(resize_keyboard=True)
+cancel_keyboard = InlineKeyboardMarkup(resize_keyboard=True)
 cancel_keyboard.add(button_cancel)

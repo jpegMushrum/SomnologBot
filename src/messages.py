@@ -2,10 +2,10 @@ msg_on_start_new = 'Hello, it\'s a bot for tracking your dreams. You can add new
 
 
 def msg_on_start_old(name):
-    return f'Hello, {name}. You can see list of commands on the palette or if you use /help.'
+    return f'Hello, {name}. You can see list of commands in the menu or if you use /help.'
 
 def msg_on_name(name):
-    return f'Ok, {name}. Tap on your palette or use /help to see list of commands.'
+    return f'Ok, {name}. Tap in your menu or use /help to see list of commands.'
 
 msg_on_help = 'Available commands: \n/add - Let you add new dream. \n/history - Shows your numbered dream. \n' \
               '/statistic - Shows your statistic.\n/rename - Let you choose new name.\n' \

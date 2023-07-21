@@ -29,10 +29,11 @@ async def command_cancel(message: types.Message, state: FSMContext):
 async def command_start(message: types.Message, state: FSMContext):
     if not (await dbActions.checkUser(message.from_user.id)):
         await bot.send_message(message.from_user.id, messages.msg_on_start_new)
+        await dbActions.addUser(message.from_user.id, message.from_user.first_name)
         await states.GettingName.name.set()
     else:
         await bot.send_message(message.from_user.id, messages.msg_on_start_old(await dbActions.getName(message.from_user.id)))
-    await state.finish()
+        await state.finish()
 
 @dp.message_handler(state='*', commands=['rename'])
 async def command_rename(message: types.Message):
@@ -108,10 +109,8 @@ async def command_help(message: types.Message, state: FSMContext):
 
 @dp.message_handler(state=states.GettingName.name)
 async def setting_name(message: types.Message, state: FSMContext):
-    if await dbActions.checkUser(message.from_user.id):
-        await dbActions.changeUserName(message.from_user.id, message.text.replace('\'', '\"').replace('\\', '\\\\'))
-    else:
-        await dbActions.addUser(message.from_user.id, message.text.replace('\'', '\"').replace('\\', '\\\\'))
+    await dbActions.changeUserName(message.from_user.id, message.text.replace('\'', '\"').replace('\\', '\\\\'))
+
     await bot.send_message(message.from_user.id, messages.msg_on_name(await dbActions.getName(message.from_user.id)))
     await state.finish()
 

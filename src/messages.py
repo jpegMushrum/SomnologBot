@@ -18,7 +18,7 @@ def msg_on_empty_handler(name):
     return f'Sorry, {name}, I can\'t answer you, please use commands. Type /help to see list.'
 
 def msg_on_adding_1(name):
-    return f'Good, {name},you need to come up with name for your dream.'
+    return f'Good, {name}, you need to come up with name for your dream.'
 
 msg_on_adding_2 = 'Then choose type of your dream. (usual, erotic ot nightmare)'
 

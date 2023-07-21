@@ -16,3 +16,6 @@ class ClearingAllHistory(StatesGroup):
 
 class ShowingHistory(StatesGroup):
     choose_dream = State()
+
+class AddingReview(StatesGroup):
+    text = State()

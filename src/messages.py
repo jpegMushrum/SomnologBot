@@ -11,6 +11,7 @@ msg_on_help = 'Available commands: \n/add - Let you add new dream. \n/history - 
               '/statistic - Shows your statistic.\n/rename - Let you choose new name.\n' \
               '/delete - Deletes your last dream.\n/clear - Clears full your history of dreams.\n' \
               '/cancel - Cancels all actions.\n/help - Show list of commands again.\n' \
+              '/review - Let you write anonymous message to the creator.\n' \
               'Call some to see information about this command.'
 
 
@@ -20,7 +21,7 @@ def msg_on_empty_handler(name):
 def msg_on_adding_1(name):
     return f'Good, {name}, you need to come up with name for your dream.'
 
-msg_on_adding_2 = 'Then choose type of your dream. (usual, erotic ot nightmare)'
+msg_on_adding_2 = 'Then choose type of your dream.'
 
 msg_on_adding_3 = 'Please type me details about your dream.'
 
@@ -71,6 +72,12 @@ def msg_statistic(name, data):
     response = f'It\'s {name} statistic:\n'
     count = sum(data)
     response += f'Usual dreams: {data[0]/count*100:.2f}%\n'
+    response += f'Very strange: {data[3]/count*100:.2f}%\n'
     response += f'Erotic dreams: {data[1]/count*100:.2f}%\n'
     response += f'Nightmares: {data[2]/count*100:.2f}%\n'
     return response
+
+msg_on_wrong_name = 'Sorry, you can\'t use this name.'
+
+def msg_on_review(name):
+    return f'Thanks for your desire, {name}, now write about the bug or somthing jpegMushrum need to do.'

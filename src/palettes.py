@@ -7,10 +7,11 @@ yes_no_keyboard = InlineKeyboardMarkup(resize_keyboard=True, one_time_keyboard=T
 yes_no_keyboard.row(button_yes, button_no)
 
 button_usual = InlineKeyboardButton(text='usual', callback_data='usual')
+button_very_strange = InlineKeyboardButton(text='very strange', callback_data='very_strange')
 button_nightmare = InlineKeyboardButton(text='nightmare', callback_data='nightmare')
 button_erotic = InlineKeyboardButton(text='erotic', callback_data='erotic')
 types_keyboard = InlineKeyboardMarkup()
-types_keyboard.row(button_usual, button_erotic, button_nightmare).add(button_cancel)
+types_keyboard.row(button_usual, button_erotic, button_nightmare, button_very_strange).add(button_cancel)
 
 button_next_page = InlineKeyboardButton(text='next page', callback_data='next_page')
 button_previous_page = InlineKeyboardButton(text='previous page', callback_data='previous_page')
@@ -21,5 +22,5 @@ button_to_choose = InlineKeyboardButton(text='back to pages', callback_data='bac
 show_dream_keyboard = InlineKeyboardMarkup()
 show_dream_keyboard.add(button_to_choose).add(button_cancel)
 
-cancel_keyboard = InlineKeyboardMarkup(resize_keyboard=True)
+cancel_keyboard = InlineKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 cancel_keyboard.add(button_cancel)
